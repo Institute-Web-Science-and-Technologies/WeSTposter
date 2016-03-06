@@ -1,0 +1,221 @@
+% !Mode:: "TeX:UTF-8"
+
+% Enable warnings about problematic code
+\RequirePackage[l2tabu, orthodox]{nag}
+
+\documentclass{WeSTPoster}
+
+% ==============================================================================
+% Metadata
+
+\title{Ontology~Learning via~Word~Embeddings}
+\author{Lukas Schmelzeisen}
+\authormail{lukas@uni-koblenz.de}
+\institute{Institute for Web Science and Technologies}
+
+
+% ==============================================================================
+% Packages
+
+% Language typesetting.
+\usepackage{polyglossia}
+\setdefaultlanguage[
+  variant = american, % Use American instead of Britsh English.
+]{english}
+
+% Unicode support for math. Load after other math/font packages.
+\usepackage{unicode-math}
+
+% Patches a few math packages to work correctly with LuaLaTeX.
+\usepackage{lualatex-math}
+
+% Various useful tools for mathematical typesetting.
+\usepackage{mathtools}
+
+% Quotations.
+\usepackage[
+  strict, % Turn warnings into errors.
+]{csquotes}
+
+% Bibliography.
+\usepackage[
+  backend = biber, % use biber as backend
+  style = authoryear-comp,
+%   style = alphabetic,
+  maxbibnames = 10, % max number of names in bibliography
+  maxcitenames = 2, % max number of names in text cite
+  uniquelist = minyear, % only add more authors if year is not unique
+  firstinits = true, % abbreviate first name of authors
+  doi = false, % do not show doi
+  isbn = false, % do not show isbn
+  url = false, % do not show url
+  eprint = false, % do not show eprint
+  urldate = long, % format of urldate field
+]{biblatex}
+\addbibresource{bibliography.bib}
+% Last names before first names: http://tex.stackexchange.com/q/113573
+\DeclareNameAlias{sortname}{last-first}
+\DeclareNameAlias{default}{last-first}
+% Semicolons to separate authors: http://tex.stackexchange.com/q/197435
+%\renewcommand{\multinamedelim}{\addsemicolon\space}
+% Author lastnames in small caps only int bibliography
+\AtBeginBibliography{
+  \renewcommand\mkbibnamelast[1]{\textsc{#1}}
+}
+% Decrease bibliography font size
+\def\bibfont{\small}
+
+% ==============================================================================
+% Editorial
+
+% Fast compilation to pdf.
+\pdfcompresslevel=9
+\pdfobjcompresslevel=2
+
+\begin{document}
+\frenchspacing
+
+\maketitle
+
+\begin{columns}
+  \column{0.5} % ---------------------------------------------------------------
+  \block{Motivation}{
+    Ontologies in the field of Computer Science
+    \textquote[\cite{Guarino2009WhatOnt}]{are a means to formally model the
+    structure of a system}.
+    They are used to specify knowledge and share it with others.
+
+    \vspace{0.5em}
+    Manually creating ontologies is a very resource intensive task as it
+    requires the cooperation of ontology engineers and domains experts.
+    Therefore, the preferred practice is to create ontologies
+    (semi-)automatically through \emph{\textcolor{colorOne}{ontology learning}}.
+
+    \vspace{0.5em}
+    Lately, the field of Natural Language Processing has seen considerable
+    advance through neural networks which employ
+    \emph{\textcolor{colorOne}{word embeddings}} that encode semantic
+    information learned in an unsupervised manner.
+
+    \vspace{0.5em}
+    The aim of this thesis is to study to what degree the advances in encoding
+    semantics can be utilized for ontology learning.
+    \vspace{0.45em}
+  }
+  \block{Research Questions}{
+    \begin{itemize}
+      \itemsep0.5em
+      \item\textbf{To what extent do word embeddings capture semantic
+        information relevant to ontology learning?}
+
+        It is still unclear to what degree the semantics encoded by word
+        embeddings matter in the context of ontology learning.
+        They might provide novel insight or be already detectable by existing
+        techniques.
+
+      \item\textbf{How can the semantics encoded by word embeddings be
+        efficiently used for ontology learning?}
+
+        Semantic relations are encoded by vector offsets, not discrete
+        enumerations.
+        It is unknown how to identify the correct relation types from a vector
+        offset.
+
+        As demonstrated by \textcite{Fu2014SemHier}, sophisticated extraction
+        methods are imaginable: they perform a piecewise linear projection for
+        trained hypernym relations.
+
+      \item\textbf{How do findings from the previous questions fare against
+        existing methods?}
+
+        Ideally, newly developed techniques can be integrated with existing
+        ones to produce more efficient syntheses.
+    \end{itemize}
+  }
+
+  \column{0.5} % ---------------------------------------------------------------
+  \block{}{
+    \innerblock{Ontology Learning}{
+      The task of ontology learning is to create ontologies from
+      pre-existing knowledge resources, e.g.\ text corpora.
+
+      \vspace{0.25em}
+      \begin{center}
+        \begin{tikzpicture}
+          \node[inner sep = 0] (icon_documents)
+            {\includegraphics[height = 150pt]{icon_documents}};
+          \node[inner sep = 0, right = 250pt of icon_documents] (icon_rdf)
+            {\includegraphics[height = 150pt]{icon_rdf}};
+          \draw[-{Triangle[length = 50pt, width = 120pt]}, line width = 50pt,
+              draw = colorOne, shorten >= 50pt, shorten <= 50pt]
+            (icon_documents.east) -- (icon_rdf.west);
+        \end{tikzpicture}
+      \end{center}
+
+      Notable subtasks include
+      \mbox{\emph{\textcolor{colorOne}{identifying concepts}}} and
+      \mbox{\emph{\textcolor{colorOne}{inferring concept relations}}}
+      \parencite{Wong2012OntSurvey}.
+    }
+
+    \vspace{0.5em}
+    \innerblock{Word Embeddings}{
+      Word embeddings are techniques that represent words through
+      low-dimensional (relative to vocabulary size) vectors of real numbers
+      instead of discrete tokens.
+      The idea is that similar words should have similar vectors.
+
+      \vspace{0.5em}
+      Recently, word embeddings produced by neural networks have been shown to
+      encode semantic relations through vector offsets unsupervised, for example
+      \mbox{$v_\text{king} - v_\text{man} + v_\text{woman} \approx v_\text{queen}$}
+      \parencite{Mikolov2013LinReg}.
+
+      \vspace{0.5em}
+      \begin{tikzfigure}[Visual of semantic relations encoded by vector
+        offsets: \emph{gender} (\textcolor{colorOne}{blue}), \emph{plural}
+        (\textcolor{colorThree}{red}). \parencite{Mikolov2013LinReg}]
+        \centering
+        \begin{tikzpicture}[draw = black,
+          gender/.style = {-{Latex[width = 30pt]},
+            draw = colorOne, line width = 7pt},
+          plural/.style = {-{Latex[width = 30pt]},
+            draw = colorThree, line width = 7pt}]
+          \begin{scope}
+            \draw[fill = white] (0, 0) rectangle (500pt, 400pt);
+
+            \node (man) at (60pt, 250pt) {man};
+            \node (woman) at (260pt, 370pt) {woman};
+            \draw[gender] (man) -- (woman);
+
+            \node (uncle) at (240pt, 200pt) {uncle};
+            \node (aunt) at (440pt, 320pt) {aunt};
+            \draw[gender] (uncle) -- (aunt);
+
+            \node (king) at (170pt, 30pt) {king};
+            \node (queen) at (370pt, 150pt) {queen};
+            \draw[gender] (king) -- (queen);
+          \end{scope}
+          \begin{scope}[shift = {(525pt, 0)}]
+            \draw[fill = white] (0, 0) rectangle (500pt, 400pt);
+
+            \node (king) at (170pt, 30pt) {king};
+            \node (queen) at (370pt, 150pt) {queen};
+            \draw[gender] (king) -- (queen);
+
+            \node (kings) at (70pt, 230pt) {kings};
+            \node (queens) at (270pt, 350pt) {queens};
+            \draw[plural] (king) -- (kings);
+            \draw[plural] (queen) -- (queens);
+          \end{scope}
+        \end{tikzpicture}
+      \end{tikzfigure}
+    }
+  }
+  \block[titleoffsety = 2.2cm, bodyoffsety = 2.2cm]{References}{
+    \sloppy
+    \printbibliography[heading = none]
+  }
+\end{columns}
+
+\end{document}
