@@ -9,8 +9,7 @@ have a look at its manual.
 
 ## Usage
 
-Have a look [example_poster.tex](blob/master/example_poster.tex) for how to use
-this class.
+Have a look [example_poster.tex](example_poster.tex) for how to use this class.
 
 Currently the code can only be build using
 [LuaLaTex](https://www.ctan.org/pkg/lualatex-doc), so make sure you have that
