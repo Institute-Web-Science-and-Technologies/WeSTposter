@@ -1,7 +1,7 @@
 % !Mode:: "TeX:UTF-8"
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{WeSTPoster}[2016/02/14 v1.0 WeSTPoster]
+\ProvidesClass{WeSTposter}[2016/02/14 v1.0 WeSTPoster]
 
 
 % ==============================================================================
@@ -26,7 +26,6 @@
   \PassOptionsToPackage{#1}{#2}
   \RequirePackage{#2}
 }
-
 
 
 % Ability to change line height locally via \setstretch
@@ -139,8 +138,8 @@
      \@institute\\[0.2em]
      \texttt{\@authormail}
   };
-  \node[text = colorThree, font = \bfseries, rotate = -45]
-    at (0.38\textwidth, 0.36\textheight) {\huge Phd Proposal};
+%   \node[text = colorThree, font = \bfseries, rotate = -45]
+%     at (0.38\textwidth, 0.36\textheight) {\huge Phd Proposal};
 }
 
 % Remove author and institute from title because we typeset them ourselves

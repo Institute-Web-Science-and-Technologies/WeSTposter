@@ -2,7 +2,7 @@
 # - http://www.alecjacobson.com/weblog/?p=3954
 # - http://www.howtotex.com/tag/faster-latex/
 
-@default_files = ('poster');
+@default_files = ('example_poster');
 
 # Use LuaLateX.
 $pdflatex = 'lualatex -file-line-error -interaction=nonstopmode -halt-on-error %O %S';
